@@ -94,3 +94,21 @@ void	ft_lstadd_back(t_list **head, char *line)
 	temp->next = new_node;
 }
 
+char	*ft_read_file(int fd)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	char	*file_content;
+	size_t	n;
+
+	while (1)
+	{
+		n = read(fd, buffer, sizeof(buffer) - 1);
+		if (n <= 0)
+			return (NULL);
+		buffer[n] = '\0';
+		file_content = ft_concatenate(file_content, buffer);
+	}
+	return (file_content);
+}
+
+
