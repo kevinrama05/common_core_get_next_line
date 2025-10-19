@@ -6,7 +6,7 @@
 /*   By: kerama <kerama@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:03 by kerama            #+#    #+#             */
-/*   Updated: 2025/10/18 09:02:18 by kerama           ###   ########.fr       */
+/*   Updated: 2025/10/19 11:31:19 by kerama           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@
 # endif
 #include <stdlib.h>
 
-typedef struct s_list
+typedef struct s_lines
 {
-	char			*data;
-	struct s_list	*next;
-}	t_list;
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-void	ft_lstremove_front(t_list **head);
-void	ft_lstadd_back(t_list **head, char *line);
+	char	*line;
+	char	*remainder;
+}	t_lines;
+size_t	ft_strlen(const char *s);
+char	*ft_concatenate(char *file_content, char *buffer);
+char	*ft_read_file(int fd);
 
 #endif
