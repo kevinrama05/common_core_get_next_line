@@ -160,7 +160,16 @@ char	*ft_read_file(int fd)
 		if (n < 0)
 			return NULL;
 		if (n == 0)
-			break;
+		{
+			if (lines && *lines && !ft_hasnewline(lines))
+			{
+				temp = lines;
+				lines = NULL;
+				return (temp);	
+			}
+			else
+				return (NULL);
+		}
 		buffer[n] = '\0';
 		temp = ft_concatenate(lines, buffer);
 		if (!temp)
