@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kerama <kerama@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 12:26:53 by kerama            #+#    #+#             */
-/*   Updated: 2025/10/19 13:30:52 by kerama           ###   ########.fr       */
+/*   Created: 2025/10/20 11:26:12 by kerama            #+#    #+#             */
+/*   Updated: 2025/10/20 11:26:36 by kerama           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,83 +115,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	substring[i] = '\0';
 	return (substring);
-}
-
-t_lines	ft_zeroed(t_lines lines)
-{
-	lines.line = NULL;
-	lines.remainder = NULL;
-	return lines;
-}
-
-t_lines ft_return_lines(char *s)
-{
-	t_lines	lines;
-	size_t	i;
-	size_t	start;
-	size_t	len;
-
-	if (!s)
-		return (ft_zeroed(lines));
-	len = ft_strlen(s);
-	i = 0;
-	start = 0;
-	while (s[i] && s[i] != '\n')
-	{
-		i++;
-		start++;
-	}
-	lines.line = ft_substr(s, 0, start + 1);
-	lines.remainder = ft_substr(s, start + 1, len - (start + 1));
-	return lines;
-}
-
-char	*ft_read_file(int fd)
-{
-	static char	*lines;
-	char		*temp;
-	char		buffer[BUFFER_SIZE + 1];
-	size_t		n;
-	t_lines		lines_struct;
-
-	while (!ft_hasnewline(lines))
-	{
-		n = read(fd, buffer, BUFFER_SIZE);
-		if (n < 0)
-			return NULL;
-		if (n == 0)
-			break;
-		buffer[n] = '\0';
-		temp = ft_concatenate(lines, buffer);
-		if (!temp)
-		{
-			free(lines);
-			return NULL;
-		}
-		if (lines)
-			free(lines);
-		lines = temp;
-	}
-	lines_struct = ft_return_lines(lines);
-	temp = lines_struct.line;
-	free(lines);
-	lines = lines_struct.remainder;
-	return temp;
-}
-
-int main(void)
-{
-	int fd = open("test.txt", O_RDONLY);
-	while (1)
-	{
-		char *c = ft_read_file(fd);
-		if (c == NULL)
-			break;
-		else
-		{
-			printf("%s", c);
-			free(c);
-		}
-	}
-	return (0);
 }
