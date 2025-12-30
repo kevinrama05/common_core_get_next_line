@@ -6,7 +6,7 @@
 /*   By: kerama <kerama@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:26:12 by kerama            #+#    #+#             */
-/*   Updated: 2025/10/20 11:26:36 by kerama           ###   ########.fr       */
+/*   Updated: 2025/10/26 10:17:52 by kerama           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,32 @@
 #include <string.h>
 #include <fcntl.h>
 
-int	ft_hasnewline(char *s)
+int	ft_n_or_l(const char *s, char c)
 {
-	int	i;
+	size_t	i;
 
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
+	if (c == 'n')
 	{
-		if (s[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	if (!s)
+		if (!s)
+			return (0);
+		i = 0;
+		while (s[i])
+		{
+			if (s[i] == '\n')
+				return (1);
+			i++;
+		}
 		return (0);
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	}
+	else
+	{
+		if (!s)
+			return (0);
+		i = 0;
+		while (s[i])
+			i++;
+		return (i);
+	}
 }
 
 char	*ft_strdup(const char *s)
@@ -51,7 +51,7 @@ char	*ft_strdup(const char *s)
 	char	*s1;
 	size_t	i;
 
-	len = ft_strlen(s);
+	len = ft_n_or_l(s, 'l');
 	s1 = (char *)malloc(sizeof(char) * (len + 1));
 	if (!s1)
 		return (NULL);
@@ -67,14 +67,17 @@ char	*ft_strdup(const char *s)
 
 char	*ft_concatenate(char *file_content, char *buffer)
 {
-	size_t	len_fc = ft_strlen(file_content);
-	size_t	len_buf = ft_strlen(buffer);
-	char	*new_file_content = malloc(len_fc + len_buf + 1);
-	size_t	i, j;
+	size_t	len_fc;
+	size_t	len_buf;
+	char	*new_file_content;
+	size_t	i;
+	size_t	j;
 
+	len_fc = ft_n_or_l(file_content, 'l');
+	len_buf = ft_n_or_l(buffer, 'l');
+	new_file_content = malloc(len_fc + len_buf + 1);
 	if (!new_file_content)
-		return NULL;
-
+		return (NULL);
 	i = 0;
 	if (file_content)
 	{
@@ -88,7 +91,7 @@ char	*ft_concatenate(char *file_content, char *buffer)
 	while (j < len_buf)
 		new_file_content[i++] = buffer[j++];
 	new_file_content[i] = '\0';
-	return new_file_content;
+	return (new_file_content);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -99,7 +102,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	s_len = ft_strlen(s);
+	s_len = ft_n_or_l(s, 'l');
 	if (start >= s_len)
 		return (ft_strdup(""));
 	if (len > s_len - start)
@@ -115,4 +118,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	substring[i] = '\0';
 	return (substring);
+}
+
+t_lines	ft_zeroed(void)
+{
+	t_lines	lines;
+
+	lines.line = NULL;
+	lines.remainder = NULL;
+	return (lines);
 }
